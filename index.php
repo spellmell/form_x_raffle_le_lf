@@ -20,7 +20,6 @@
 			array_push($emails_list,array_reverse(explode(",", $line, -1))[0]);
 	}
 	fclose($fop);
-	// print_r($emails_list);
 	// registro de datos
 	$registro = false;
 	if(!empty($_POST['name']) && !empty($_POST['surname']) && !empty($_POST['email']) && !empty($_POST['course'])){
@@ -48,14 +47,6 @@
 		echo "faltan $countdown días para el sorteo";
 	}
 	?>
-	<script>
-	  document.addEventListener('DOMContentLoaded', function(){
-	    let formulario = document.getElementById('registrar');
-	    formulario.addEventListener('submit', function() {
-	      formulario.reset();
-	    });
-	  });
-	</script>
 	<div id="master_conteiner">
 		<div id="child_of_master"></div>
 		<div id="child_of_master">
