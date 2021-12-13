@@ -11,17 +11,32 @@
 </head>
 <body>
 	<?php
+	// lectura de emails registrados
+	$saved_file = "registro_de_participantes.txt";
+	$fop = fopen($saved_file, "r");
+	$emails_list = [];
+	while (!feof($fop)){
+	    $line = fgets($fop);
+			array_push($emails_list,array_reverse(explode(",", $line, -1))[0]);
+	}
+	fclose($fop);
+	// print_r($emails_list);
 	// registro de datos
-	$registro = False;
+	$registro = false;
 	if(!empty($_POST['name']) && !empty($_POST['surname']) && !empty($_POST['email']) && !empty($_POST['course'])){
-		$userdata = filter_var($_POST['name']." ".$_POST['surname'].", ".$_POST['email'].", ".$_POST['course'],FILTER_SANITIZE_STRING)."\n";
-		$archivo_de_datos = fopen('registro_de_participantes.txt','a');
-		fputs($archivo_de_datos,$userdata);
-		fclose($archivo_de_datos);
-		$name = $_POST['name'];
-		$post_reg_message = "Registro completo!";
-		$registro = True;
-		// unset($_POST['name'],$_POST['surname'],$_POST['email'],$_POST['course']);
+		if(!in_array($_POST['email'],$emails_list)){
+			$userdata = filter_var($_POST['name']." ".$_POST['surname'].", ".$_POST['email'].", ".$_POST['course'],FILTER_SANITIZE_STRING)."\n";
+			$archivo_de_datos = fopen('registro_de_participantes.txt','a');
+			fputs($archivo_de_datos,$userdata);
+			fclose($archivo_de_datos);
+			$name = $_POST['name'];
+			$post_reg_message = "Registro completo!";
+			$registro = true;
+			// unset($_POST['name'],$_POST['surname'],$_POST['email'],$_POST['course']);
+		} else {
+			$post_reg_message = "El email: ".$_POST['email']." ya está registrado.";
+			$registro = false;
+		}
 	} else {
 		$post_reg_message = "Registro Incompleto. Falta Información.";
 	}
@@ -47,7 +62,7 @@
 			<div id="conteiner">
 				<div id="child"><h2 class="align_c">Linux Español</h2></div>
 				<div id="child"><h3 class="align_c">Registro para el sorteo de Linux Fundation</h3></div>
-				<?php if($registro == False){
+				<?php if($registro == false){
 				echo '<div id="child">
 					<form name="registrar" method="post">
 					<label for="registrar"></label>
@@ -80,7 +95,7 @@
 					}
 				?>
 				<?php
-				if($registro == False){
+				if($registro == false){
 					echo '<div id="child"><h5 class="align_c">Todos los campos son requeridos *</h5></div>';
 				}
 				?>
@@ -95,7 +110,7 @@
 					</div>
 				</div>
 		</div>
-		<div id="child_of_master"></div>
+		<div id="child_of_master"><?php print_r($emails_list); ?></div>
 	</div>
 </body>
 </html>
