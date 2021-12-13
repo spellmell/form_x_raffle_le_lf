@@ -10,37 +10,37 @@
 	<link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 </head>
 <body>
-<?php
-// registro de datos
-$registro = False;
-if(!empty($_POST['name']) && !empty($_POST['surname']) && !empty($_POST['email']) && !empty($_POST['course'])){
-	$userdata = filter_var($_POST['name']." ".$_POST['surname'].", ".$_POST['email'].", ".$_POST['course'],FILTER_SANITIZE_STRING)."\n";
-	$archivo_de_datos = fopen('registro_de_participantes.txt','a');
-	fputs($archivo_de_datos,$userdata);
-	fclose($archivo_de_datos);
-	$name = $_POST['name'];
-	$post_reg_message = "Registro completo!";
-	$registro = True;
-	// unset($_POST['name'],$_POST['surname'],$_POST['email'],$_POST['course']);
-} else {
-	$post_reg_message = "Registro Incompleto. Falta Información.";
-}
-// cuenta regresiva
-function cronometro(){
-	$today = time();
-	$event = mktime(0,0,0,12,31,2021);
-	$countdown = round(($event - $today)/86400);
-	echo "faltan $countdown días para el sorteo";
-}
-?>
-<script>
-  document.addEventListener('DOMContentLoaded', function(){
-    let formulario = document.getElementById('registrar');
-    formulario.addEventListener('submit', function() {
-      formulario.reset();
-    });
-  });
-</script>
+	<?php
+	// registro de datos
+	$registro = False;
+	if(!empty($_POST['name']) && !empty($_POST['surname']) && !empty($_POST['email']) && !empty($_POST['course'])){
+		$userdata = filter_var($_POST['name']." ".$_POST['surname'].", ".$_POST['email'].", ".$_POST['course'],FILTER_SANITIZE_STRING)."\n";
+		$archivo_de_datos = fopen('registro_de_participantes.txt','a');
+		fputs($archivo_de_datos,$userdata);
+		fclose($archivo_de_datos);
+		$name = $_POST['name'];
+		$post_reg_message = "Registro completo!";
+		$registro = True;
+		// unset($_POST['name'],$_POST['surname'],$_POST['email'],$_POST['course']);
+	} else {
+		$post_reg_message = "Registro Incompleto. Falta Información.";
+	}
+	// cuenta regresiva
+	function cronometro(){
+		$today = time();
+		$event = mktime(0,0,0,12,31,2021);
+		$countdown = round(($event - $today)/86400);
+		echo "faltan $countdown días para el sorteo";
+	}
+	?>
+	<script>
+	  document.addEventListener('DOMContentLoaded', function(){
+	    let formulario = document.getElementById('registrar');
+	    formulario.addEventListener('submit', function() {
+	      formulario.reset();
+	    });
+	  });
+	</script>
 	<div id="master_conteiner">
 		<div id="child_of_master"></div>
 		<div id="child_of_master">
