@@ -170,12 +170,7 @@ td {
 	margin:0 auto;
 }
 #social_icons_child {
-	display:flex;
-	flex-direction: row;
-	flex-wrap:nowrap;
-	justify-content:center;
-	align-items:center;
-	align-content: center;
+	flex:1;
 	width:66px;
 	height:66px;
 	margin:0 auto;
@@ -185,5 +180,5 @@ td {
 	border-radius: 60px;
 }
 #social_icons_child:hover {
-	background-color: darkseagreen;
+	background-color: yellowgreen;
 }

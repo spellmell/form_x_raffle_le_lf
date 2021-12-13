@@ -45,13 +45,6 @@ function cronometro(){
 		<div id="child_of_master"></div>
 		<div id="child_of_master">
 			<div id="conteiner">
-				<div id="child">
-					<div id="social_icons_conteiner">
-						<div id="social_icons_child">
-							<a href="https://www.facebook.com/groups/linuxesp/" target="_blank"><img src="img/social/06-facebook.svg"></a>
-						</div>
-					</div>
-				</div>
 				<div id="child"><h2 class="align_c">Linux Español</h2></div>
 				<div id="child"><h3 class="align_c">Registro para el sorteo de Linux Fundation</h3></div>
 				<?php if($registro == False){
@@ -59,10 +52,10 @@ function cronometro(){
 					<form name="registrar" method="post">
 					<label for="registrar"></label>
 					<table id="formulario">
-						<tr><td>*Nombre:</td><td><input type="text" name="name" required></td></tr>
-						<tr><td>*Apellido:</td><td><input type="text" name="surname" required></td></tr>
-						<tr><td>*Email:</td><td><input type="email" name="email" required></td></tr>
-						<tr><td>*Curso:</td><td><input type="text" name="course" required></td></tr>
+						<tr><td>*Nombre:</td><td><input type="text" name="name" required autocomplete="off"></td></tr>
+						<tr><td>*Apellido:</td><td><input type="text" name="surname" required autocomplete="off"></td></tr>
+						<tr><td>*Email:</td><td><input type="email" name="email" required autocomplete="off"></td></tr>
+						<tr><td>*Curso:</td><td><input type="text" name="course" required autocomplete="off"></td></tr>
 						<tr>
 							<td></td>
 							<td>
@@ -94,8 +87,13 @@ function cronometro(){
 				<div id="child">
 					<h3 class="align_c"><?php cronometro(); ?></h3>
 				</div>
-			<div id="child"><h4 class="align_c">contacto@contacto.com</h4></div>
-			</div>
+				<div id="child">
+					<div id="social_icons_conteiner">
+						<div id="social_icons_child" class="align_c">
+							<a href="https://www.facebook.com/groups/linuxesp/" target="_blank"><img src="img/social/06-facebook.svg" width="48px" height="48px"></a>
+						</div>
+					</div>
+				</div>
 		</div>
 		<div id="child_of_master"></div>
 	</div>
