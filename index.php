@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width", user-scalable="no", initial-scale="1.0", maximum-scale="1.0", minimum-scale="1.0">
-  <title>Linux en español - Registro para sorteo de Linux Fundation</title>
+  <title>Linux Español - Registro para sorteo de Linux Fundation</title>
   <link rel="stylesheet" type="text/css" title="Cool stylesheet" href="css/styles.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
