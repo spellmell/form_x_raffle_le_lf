@@ -19,12 +19,14 @@
 	$archivo = "registro.txt";
 	$registro = false;
 	$email = "";
+	$post_reg_message = "";
 
 	function check_mail($name,$surname,$email,$course){
 		global $archivo;
 		global $registro;
 		global $email;
-		// buscar email en el txt
+		global $post_reg_message;
+		// search email in the .txt
 		$search = $email;
 		$lines = file($archivo);
 		$found = false;
@@ -33,7 +35,7 @@
 				$found = true;
 			}
 		}
-		// if not found register a new line in txt
+		// if not found the email, register a new line in the .txt
 		if(!$found){
 			$userdata = $name." ".$surname.", ".$email.", ".$course."\n";
 			$fop = fopen($archivo,'a');
@@ -57,7 +59,7 @@
 		$email = filter_var(filter_var($_POST['email'],FILTER_VALIDATE_EMAIL),FILTER_SANITIZE_STRING);
 		$course = filter_var($_POST['course'],FILTER_SANITIZE_STRING);
 		// check mail y registro
-		check_mail($name,$surname,$email,$course);
+		$registro = check_mail($name,$surname,$email,$course);
 	}
 
 	// cuenta regresiva
