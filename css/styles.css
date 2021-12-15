@@ -161,6 +161,9 @@ td {
 .color_registro {
 	color:yellowgreen;
 }
+.color_alert {
+	color:orange;
+}
 
 #social_icons_conteiner {
 	display:flex;

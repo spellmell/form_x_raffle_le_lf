@@ -12,11 +12,11 @@
 <body>
 	<?php
 	// debug: mostrar errores
-	ini_set('display_errors', 1);
-	ini_set('display_startup_errors', 1);
-	error_reporting(E_ALL);
-	// $url_site = "http://lfundation";
-	$archivo = "registro.txt";
+	// ini_set('display_errors', 1);
+	// ini_set('display_startup_errors', 1);
+	// error_reporting(E_ALL);
+
+	$archivo = "registro.cvs";
 	$registro = false;
 	$email = "";
 	$post_reg_message = "";
@@ -37,7 +37,7 @@
 		}
 		// if not found the email, register a new line in the .txt
 		if(!$found){
-			$userdata = $name." ".$surname.", ".$email.", ".$course."\n";
+			$userdata = $name." ".$surname.",".$email.",".$course."\n";
 			$fop = fopen($archivo,'a');
 			fputs($fop,$userdata);
 			fclose($fop);
@@ -81,10 +81,10 @@
 					<form name="registrar" method="post">
 					<label for="registrar"></label>
 					<table id="formulario">
-						<tr><td>*Nombre:</td><td><input type="text" name="name" min="3" max="16" required autocomplete="off"></td></tr>
-						<tr><td>*Apellido:</td><td><input type="text" name="surname" min="3" max="16" required autocomplete="off"></td></tr>
-						<tr><td>*Email:</td><td><input type="email" name="email" min="16" max="32" required autocomplete="off"></td></tr>
-						<tr><td>*Curso:</td><td><input type="text" name="course" min="3" max="32" required autocomplete="off"></td></tr>
+						<tr><td>*Nombre:</td><td><input type="text" name="name" required autocomplete="off"></td></tr>
+						<tr><td>*Apellido:</td><td><input type="text" name="surname" required autocomplete="off"></td></tr>
+						<tr><td>*Email:</td><td><input type="email" name="email" required autocomplete="off"></td></tr>
+						<tr><td>*Curso:</td><td><input type="text" name="course" required autocomplete="off"></td></tr>
 						<tr>
 							<td></td>
 							<td>
@@ -105,7 +105,12 @@
 				?>
 				<?php
 					if(($registro || !$registro) && !empty($post_reg_message)){
-						echo '<div id="child"><h3 class="align_c color_registro">'.$post_reg_message.'</h3></div>';
+						if($registro){
+							$color = "color_registro";
+						} else {
+							$color = "color_alert";
+						}
+						echo '<div id="child"><h3 class="align_c '.$color.'">'.$post_reg_message.'</h3></div>';
 					} elseif(!$registro && empty($post_reg_message)){
 						echo '<div id="child"><h5 class="align_c">Todos los campos son requeridos *</h5></div>';
 					}
