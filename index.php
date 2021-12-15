@@ -18,49 +18,48 @@
 	// $url_site = "http://lfundation";
 	$archivo = "registro.txt";
 	$registro = false;
-	$emails_list = [];
 	$email = "";
-	$valid_mail = false;
 
-	function charge_emails(){
+	function check_mail($name,$surname,$email,$course){
 		global $archivo;
-		global $emails_list;
-		$saved_file = $archivo;
-		$fop = fopen($saved_file, "r");
-		while(!feof($fop)){
-			$line = fgets($fop);
-			// $emails_list[] = isset(explode(",", $line)[1]);
-			$emails_list[] = explode(",", $line)[1];
+		global $registro;
+		global $email;
+		// buscar email en el txt
+		$search = $email;
+		$lines = file($archivo);
+		$found = false;
+		foreach($lines as $line){
+			if(strpos($line, $search) !== false){
+				$found = true;
+			}
 		}
-		fclose($fop);
-		return $emails_list;
-	}
-
-	if(!empty($_POST['name']) && !empty($_POST['surname']) && !empty($_POST['email']) && !empty($_POST['course'])){
-		// lectura de emails registrados
-		$emails_list = charge_emails();
-
-		// carga de variables y sanitizacion
-		$name = filter_var($_POST['name'],FILTER_SANITIZE_STRING);
-		$surname = filter_var($_POST['surname'],FILTER_SANITIZE_STRING);
-		$email = filter_var(filter_var($_POST['email'],FILTER_VALIDATE_EMAIL),FILTER_SANITIZE_STRING);
-		$course = filter_var($_POST['course'],FILTER_SANITIZE_STRING);
-
-		print("el puto email es: ".$email."\n");
-		print_r(array_values($emails_list));
-
-		if(!in_array($email,$emails_list)){
+		// if not found register a new line in txt
+		if(!$found){
 			$userdata = $name." ".$surname.", ".$email.", ".$course."\n";
 			$fop = fopen($archivo,'a');
 			fputs($fop,$userdata);
 			fclose($fop);
 			$post_reg_message = $name."</br>Registro completo!";
 			$registro = true;
+			return $registro;
 		} else {
 			$post_reg_message = $name."</br>El email: ".$email."</br> ya está registrado.";
 			$registro = false;
+			return $registro;
 		}
 	}
+
+	// si el formulario fue enviado
+	if(!empty($_POST['name']) && !empty($_POST['surname']) && !empty($_POST['email']) && !empty($_POST['course'])){
+		// carga de variables y sanitizacion
+		$name = filter_var($_POST['name'],FILTER_SANITIZE_STRING);
+		$surname = filter_var($_POST['surname'],FILTER_SANITIZE_STRING);
+		$email = filter_var(filter_var($_POST['email'],FILTER_VALIDATE_EMAIL),FILTER_SANITIZE_STRING);
+		$course = filter_var($_POST['course'],FILTER_SANITIZE_STRING);
+		// check mail y registro
+		check_mail($name,$surname,$email,$course);
+	}
+
 	// cuenta regresiva
 	function cronometro(){
 		$today = time();
