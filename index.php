@@ -11,42 +11,54 @@
 </head>
 <body>
 	<?php
+	// debug: mostrar errores
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
+	error_reporting(E_ALL);
 	// $url_site = "http://lfundation";
+	$archivo = "registro.txt";
+	$registro = false;
+	$emails_list = [];
+	$email = "";
+	$valid_mail = false;
+
 	function charge_emails(){
-		$saved_file = "registro_de_participantes.txt";
+		global $archivo;
+		global $emails_list;
+		$saved_file = $archivo;
 		$fop = fopen($saved_file, "r");
-		$emails_list = [];
-		while (!feof($fop)){
-				$line = fgets($fop);
-				array_push($emails_list,explode(",", $line)[1]);
+		while(!feof($fop)){
+			$line = fgets($fop);
+			// $emails_list[] = isset(explode(",", $line)[1]);
+			$emails_list[] = explode(",", $line)[1];
 		}
 		fclose($fop);
 		return $emails_list;
 	}
+
 	if(!empty($_POST['name']) && !empty($_POST['surname']) && !empty($_POST['email']) && !empty($_POST['course'])){
 		// lectura de emails registrados
 		$emails_list = charge_emails();
-		// carga de variables
-		$registro = false;
+
+		// carga de variables y sanitizacion
 		$name = filter_var($_POST['name'],FILTER_SANITIZE_STRING);
 		$surname = filter_var($_POST['surname'],FILTER_SANITIZE_STRING);
 		$email = filter_var(filter_var($_POST['email'],FILTER_VALIDATE_EMAIL),FILTER_SANITIZE_STRING);
 		$course = filter_var($_POST['course'],FILTER_SANITIZE_STRING);
-		// registro de datos
-		// if(!in_array($email,$emails_list)){
-		if(array_search($email,array($emails_list)) != false){
+
+		print("el puto email es: ".$email."\n");
+		print_r(array_values($emails_list));
+
+		if(!in_array($email,$emails_list)){
 			$userdata = $name." ".$surname.", ".$email.", ".$course."\n";
-			$archivo_de_datos = fopen('registro_de_participantes.txt','a');
-			fputs($archivo_de_datos,$userdata);
-			fclose($archivo_de_datos);
-			$post_reg_message = "Registro completo!";
-			$emails_list = charge_emails();
+			$fop = fopen($archivo,'a');
+			fputs($fop,$userdata);
+			fclose($fop);
+			$post_reg_message = $name."</br>Registro completo!";
 			$registro = true;
-			echo "UNO";
 		} else {
-			$post_reg_message = "El email: ".$email." ya está registrado.";
+			$post_reg_message = $name."</br>El email: ".$email."</br> ya está registrado.";
 			$registro = false;
-			echo "DOS";
 		}
 	}
 	// cuenta regresiva
@@ -68,10 +80,10 @@
 					<form name="registrar" method="post">
 					<label for="registrar"></label>
 					<table id="formulario">
-						<tr><td>*Nombre:</td><td><input type="text" name="name" required autocomplete="off"></td></tr>
-						<tr><td>*Apellido:</td><td><input type="text" name="surname" required autocomplete="off"></td></tr>
-						<tr><td>*Email:</td><td><input type="email" name="email" required autocomplete="off"></td></tr>
-						<tr><td>*Curso:</td><td><input type="text" name="course" required autocomplete="off"></td></tr>
+						<tr><td>*Nombre:</td><td><input type="text" name="name" min="3" max="16" required autocomplete="off"></td></tr>
+						<tr><td>*Apellido:</td><td><input type="text" name="surname" min="3" max="16" required autocomplete="off"></td></tr>
+						<tr><td>*Email:</td><td><input type="email" name="email" min="16" max="32" required autocomplete="off"></td></tr>
+						<tr><td>*Curso:</td><td><input type="text" name="course" min="3" max="32" required autocomplete="off"></td></tr>
 						<tr>
 							<td></td>
 							<td>
@@ -92,11 +104,9 @@
 				?>
 				<?php
 					if(($registro || !$registro) && !empty($post_reg_message)){
-						echo '<div id="child"><h2 class="align_c color_registro">'.$name."<br/>".$post_reg_message.'</h2></div>';
-						unset($name,$surname,$email,$course);
+						echo '<div id="child"><h3 class="align_c color_registro">'.$post_reg_message.'</h3></div>';
 					} elseif(!$registro && empty($post_reg_message)){
 						echo '<div id="child"><h5 class="align_c">Todos los campos son requeridos *</h5></div>';
-						unset($name,$surname,$email,$course);
 					}
 				?>
 				<div id="child">
@@ -108,7 +118,7 @@
 							<a href="https://www.facebook.com/groups/linuxesp/" target="_blank"><img src="img/social/06-facebook.svg" width="48px" height="48px"></a>
 						</div>
 					</div>
-					</br><div id="child_of_master"><div class="color_registro" style="font-size:0.8rem;"><?php print_r($emails_list); ?></div></div>
+				</div>
 				</div>
 		</div>
 	</div>
